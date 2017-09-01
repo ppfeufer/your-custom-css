@@ -82,11 +82,11 @@ if(!function_exists('custom_css_get_default')) {
 
 		switch($var_sWhere) {
 			case 'frontend':
-				$var_sCustomCssDefault = '@charset "UTF-8";';
+				$var_sCustomCssDefault = '';
 				break;
 
 			case 'backend':
-				$var_sCustomCssDefault = '@charset "UTF-8";';
+				$var_sCustomCssDefault = '';
 				break;
 		}
 
@@ -102,7 +102,7 @@ if(!function_exists('custom_css_get_default')) {
 if(!function_exists('custom_css_options')) {
 	function custom_css_options() {
 		if(current_user_can('manage_options')) {
-			add_options_page('Your CSS', __('Your CSS', 'custom-css'), 8, basename(__FILE__, '.php'), 'custom_css_options_page');
+			add_options_page('Your CSS', __('Your CSS', 'custom-css'), 'manage_options', basename(__FILE__, '.php'), 'custom_css_options_page');
 		}
 
 		if($_REQUEST['page'] == 'your-custom-css') {
@@ -167,10 +167,6 @@ if(!function_exists('custom_css_options_page')) {
 						<p><textarea name="custom-css-backend"><?php echo esc_textarea(custom_css_get_options('custom-css-backend')); ?></textarea></p>
 					</div>
 				</div>
-				<div class="flattr-button">
-					<?php _e('Support me if you like the Plugin', 'custom-css'); ?><br />
-					<a href="http://flattr.com/thing/290220/WordPress-Plugin-Your-Custom-CSS" target="_blank"><img src="http://api.flattr.com/button/flattr-badge-large.png" alt="Flattr this" title="Flattr this" border="0" /></a>
-				</div>
 				<p class="submit">
 					<input type="submit" name="Submit" value="<?php _e('Save CSS', 'custom-css'); ?>" />
 				</p>
@@ -204,13 +200,13 @@ if(!function_exists('custom_css_set_options')) {
 		update_option('custom-css-options', $array_Options);
 		wp_cache_set('custom-css-options', $array_Options);
 
-		if(custom_css_get_options('custom-css-frontend') != custom_css_get_default('frontend')) {
+//		if(custom_css_get_options('custom-css-frontend') != custom_css_get_default('frontend')) {
 			custom_css_write('frontend', $array_Options['custom-css-frontend']);
-		}
+//		}
 
-		if(custom_css_get_options('custom-css-backend') != custom_css_get_default('backend')) {
+//		if(custom_css_get_options('custom-css-backend') != custom_css_get_default('backend')) {
 			custom_css_write('backend', $array_Options['custom-css-backend']);
-		}
+//		}
 	}
 }
 
@@ -222,10 +218,10 @@ if(!function_exists('custom_css_set_options')) {
  */
 if(!function_exists('custom_css_write')) {
 	function custom_css_write($var_sWhere = '', $var_sCss = '') {
-		if($var_sCss == '' || $var_sCss == custom_css_get_default($var_sWhere)) {
-			@unlink(CUSTOM_CSS_FILE . $var_sWhere . '.css');
+		if(empty($var_sCss)) {
+			unlink(CUSTOM_CSS_FILE . $var_sWhere . '.css');
 		} else {
-			@file_put_contents(CUSTOM_CSS_FILE . $var_sWhere . '.css', $var_sCss);
+			file_put_contents(CUSTOM_CSS_FILE . $var_sWhere . '.css', $var_sCss);
 		}
 	}
 }
@@ -238,8 +234,8 @@ if(!function_exists('custom_css_write')) {
 if(!function_exists('custom_css_to_frontend')) {
 	// Frontend
 	function custom_css_to_frontend() {
-		if(file_exists(CUSTOM_CSS_FILE . 'frontend.css') && custom_css_get_options('custom-css-frontend') != custom_css_get_default('frontend')) {
-			echo '<link rel="stylesheet" type="text/css" href="' . CUSTOM_CSS_URI . 'frontend.css?ver=' . YOUR_CUSTOM_CSS_VERSION . '" />';
+		if(file_exists(CUSTOM_CSS_FILE . 'frontend.css')) {
+			echo '<link rel="stylesheet" type="text/css" href="' . CUSTOM_CSS_URI . 'frontend.css" />';
 		}
 	}
 
@@ -249,8 +245,8 @@ if(!function_exists('custom_css_to_frontend')) {
 if(!function_exists('custom_css_to_backend')) {
 	// Backend
 	function custom_css_to_backend() {
-		if(file_exists(CUSTOM_CSS_FILE . 'backend.css') && custom_css_get_options('custom-css-backend') != custom_css_get_default('backend')) {
-			echo '<link rel="stylesheet" type="text/css" href="' . CUSTOM_CSS_URI . 'backend.css?ver=' . YOUR_CUSTOM_CSS_VERSION . '" />';
+		if(file_exists(CUSTOM_CSS_FILE . 'backend.css')) {
+			echo '<link rel="stylesheet" type="text/css" href="' . CUSTOM_CSS_URI . 'backend.css" />';
 		}
 	}
 
