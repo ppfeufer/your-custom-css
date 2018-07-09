@@ -1,10 +1,9 @@
 === Your Custom CSS ===
 Contributors: ppfeufer
-Donate link:
 Tags: css
-Requires at least: 3.1
-Tested up to: 4.4
-Stable tag: 1.3
+Requires at least: 4.7
+Tested up to: 5.0-alpha
+Stable tag: 1.4
 
 Add your own CSS to your WordPress Backend and Frontend.
 
@@ -42,6 +41,11 @@ You can use the built in installer and upgrader, or you can install the plugin m
 
 
 == Changelog ==
+= 1.4 =
+* (09. July 2018)
+* Tested up to WordPress 5.0-alpha
+* Code refactored
+
 = 1.3 =
 * (02. November 2012)
 * Tested up to WordPress 3.8-alpha
